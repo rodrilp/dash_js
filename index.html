@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<title>P3_IRAC</title>
+</head>
+
+<body>
+	<h1> Web client implementation </h1>
+
+	<p> <strong>Authors:</strong> Guillermo Jimenez, Rodrigo Lopez, Luis Castaneda, Alicia Soria</p>
+    
+	<video class="dashjs-player" height="60%" width="60%"autoplay controls preload="auto">
+	  <source src="https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd" type="application/dash+xml"/>
+	</video>
+
+	<script>
+	  var player;
+	  document.addEventListener("DOMContentLoaded", function () {
+	    init();
+	  });
+	  function init(){
+	    player = dashjs.MediaPlayerFactory.create(document.querySelector(".dashjs-player"));
+	  };
+	</script>
+
+	<script src="dash.all.min.js"></script>
+	<p> Video courtesy of <a href="https://en.wikipedia.org/wiki/Envivio"> Envivio </a> </p>
+
+</body>
+
+</html>
