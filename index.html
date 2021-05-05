@@ -1,24 +1,31 @@
 <!doctype html>
 <html>
+
 <head>
-<title>P3_IRAC</title>
-<script src="https://reference.dashif.org/dash.js/latest/dist/dash.all.debug.js"></script>
-<script src="./mpd.js"></script>
+	<title>P3_IRAC</title>
+	<script src="https://reference.dashif.org/dash.js/latest/dist/dash.all.debug.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="./mpd.js"></script>
 </head>
 
 <body>
 	<h1> Web client implementation </h1>
 
 	<p> <strong>Authors:</strong> Guillermo Jimenez, Rodrigo Lopez, Luis Castaneda, Alicia Soria</p>
-	
+
 	<div class="code">
 		<video class="dashjs-player" height="60%" width="60%" autoplay controls preload="auto" muted>
 		</video>
-		</div>
-		<div class="code">
-		<p>Video Bitrate: <span id="bitrate"></span> kbps</p> <p>Video Buffer: <span id="buffer"></span> seconds</p> <p>Video Representation: <span id="representation"></span></p>
 	</div>
-
+	<div class="code">
+		<p>Video Bitrate: <span id="bitrate"></span></p>
+		<p>Video Buffer: <span id="buffer"></span></p>
+		<p>Video Representation: <span id="representation"></span></p>
+	</div>
+	<div>
+		<canvas id="myChart"></canvas>
+	</div>
+	
 	<p> Video courtesy of <a href="https://en.wikipedia.org/wiki/Envivio"> Envivio </a> </p>
 
 </body>
