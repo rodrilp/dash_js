@@ -22,10 +22,56 @@
 		<p>Video Buffer: <span id="buffer"></span></p>
 		<p>Video Representation: <span id="representation"></span></p>
 	</div>
-	<div>
-		<canvas id="myChart"></canvas>
-	</div>
-	
+
+	<canvas id="myChart" width="400" height="400"></canvas>
+
+	<script>
+		var ctx = document.getElementById('myChart').getContext('2d');
+		var myChart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: [],
+				datasets: [{
+					label: 'BitRate',
+					data: [],
+					yAxisID: 'y',
+					borderColor: 'red',
+					fill: false,
+					cubicInterpolationMode: 'monotone',
+					tension: 0.4
+				},
+				{
+					label: 'Buffer Level',
+					data: [],
+					yAxisID: 'y1',
+					borderColor: 'blue',
+					fill: false,
+					cubicInterpolationMode: 'monotone',
+					tension: 0.4
+				}]
+			},
+			options: {
+				scales: {
+					y: {
+						type: 'linear',
+						display: true,
+						position: 'left',
+					},
+					y1: {
+						type: 'linear',
+						display: true,
+						position: 'right',
+
+						// grid line settings
+						grid: {
+							drawOnChartArea: false, // only want the grid lines for one axis to show up
+						},
+					},
+				}
+
+			}
+		});
+	</script>
 	<p> Video courtesy of <a href="https://en.wikipedia.org/wiki/Envivio"> Envivio </a> </p>
 
 </body>

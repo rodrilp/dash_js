@@ -1,32 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     init();
-    var ctx = document.getElementById('myChart').getContext('2d');
-    myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            datasets: [{
-                label: '# of Votes',
-                data: bufferArr,
-            },
-            {
-                label: '# of Votes',
-                data: bitrateArr,
-            }],
-
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
 });
 
-var myChart
-var bitrateArr = []
-var bufferArr = []
 
 
 function init() {
@@ -55,15 +30,22 @@ function init() {
             document.getElementById('representation').innerText = repSwitch.to;
 
             console.log(myChart);
-            //bitrateArr.push(bitrate);
-            //bufferArr.push(bufferLevel);
+
             if (myChart !== undefined) {
                 myChart.data.datasets[0].data.push(bitrate);
                 myChart.data.datasets[1].data.push(bufferLevel);
+
+                momentoActual = new Date();
+                hora = momentoActual.getHours();
+                minuto = momentoActual.getMinutes();
+                segundo = momentoActual.getSeconds();
+                horaImprimible = hora + " : " + minuto + " : " + segundo;
+                
+                myChart.data.labels.push(horaImprimible);
                 myChart.update();
             }
 
         }
-    }, 500);
+    }, 5000);
 }
 
