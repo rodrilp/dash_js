@@ -32,6 +32,13 @@ function init() {
             console.log(myChart);
 
             if (myChart !== undefined) {
+
+                if(myChart.data.datasets[0].data.length > 10){
+                    myChart.data.datasets[0].data.shift();
+                    myChart.data.datasets[1].data.shift();
+                    myChart.data.labels.shift();
+                }
+
                 myChart.data.datasets[0].data.push(bitrate);
                 myChart.data.datasets[1].data.push(bufferLevel);
 
@@ -39,13 +46,13 @@ function init() {
                 hora = momentoActual.getHours();
                 minuto = momentoActual.getMinutes();
                 segundo = momentoActual.getSeconds();
-                horaImprimible = hora + " : " + minuto + " : " + segundo;
+                horaImprimible = hora + " : " + (minuto < 10 ? "0" + minuto : minuto) + " : " + (segundo < 10 ? "0" + segundo : segundo);
                 
                 myChart.data.labels.push(horaImprimible);
                 myChart.update();
             }
 
         }
-    }, 5000);
+    }, 1500)
 }
 

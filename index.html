@@ -13,18 +13,22 @@
 
 	<p> <strong>Authors:</strong> Guillermo Jimenez, Rodrigo Lopez, Luis Castaneda, Alicia Soria</p>
 
-	<div class="code">
-		<video class="dashjs-player" height="60%" width="60%" autoplay controls preload="auto" muted>
-		</video>
-	</div>
-	<div class="code">
-		<p>Video Bitrate: <span id="bitrate"></span></p>
-		<p>Video Buffer: <span id="buffer"></span></p>
-		<p>Video Representation: <span id="representation"></span></p>
-	</div>
-
-	<div style="width: 60%; height: 60%;">
-		<canvas id="myChart" width="400" height="400"></canvas>
+	<div style="display: flex; justify-content: space-between; margin-left: 1vw; margin-right: 1vw;">
+		<div style="width: 52vw; height: 14vh; margin-right: 2vw;">
+			<div class="code">
+				<video class="dashjs-player" height="100%" width="100%" autoplay controls preload="auto" muted>
+				</video>
+			</div>
+			<div class="code">
+				<p>Video Bitrate: <span id="bitrate"></span></p>
+				<p>Video Buffer: <span id="buffer"></span></p>
+				<p>Video Representation: <span id="representation"></span></p>
+			</div>
+			<p> Video courtesy of <a href="https://en.wikipedia.org/wiki/Envivio"> Envivio </a> </p>
+		</div>
+		<div style="width: 52vw; height: 14vh; margin-left: 2vw;">
+			<canvas id="myChart"></canvas>
+		</div>
 	</div>
 	
 
@@ -38,7 +42,7 @@
 					label: 'BitRate',
 					data: [],
 					yAxisID: 'y',
-					borderColor: 'red',
+					borderColor: "red",
 					fill: false,
 					cubicInterpolationMode: 'monotone',
 					tension: 0.4
@@ -75,7 +79,6 @@
 			}
 		});
 	</script>
-	<p> Video courtesy of <a href="https://en.wikipedia.org/wiki/Envivio"> Envivio </a> </p>
 
 </body>
 
