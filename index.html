@@ -1,72 +1,83 @@
 <!doctype html>
 <html>
+
 <head>
-<title>P3_IRAC</title>
-<meta charset="UTF-8">
+	<title>P3_IRAC</title>
+	<script src="https://reference.dashif.org/dash.js/latest/dist/dash.all.debug.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="./mpd.js"></script>
 </head>
 
 <body>
 	<h1> Web client implementation </h1>
 
 	<p> <strong>Authors:</strong> Guillermo Jimenez, Rodrigo Lopez, Luis Castaneda, Alicia Soria</p>
-	
-	<div class="code">
-		<video class="dashjs-player" height="60%" width="60%" autoplay controls preload="auto" muted>
-		</video>
+
+	<div style="display: flex; justify-content: space-between; margin-left: 1vw; margin-right: 1vw;">
+		<div style="width: 52vw; height: 14vh; margin-right: 2vw;">
+			<div class="code">
+				<video class="dashjs-player" height="100%" width="100%" autoplay controls preload="auto" muted>
+				</video>
+			</div>
+			<div class="code">
+				<p>Video Bitrate: <span id="bitrate"></span></p>
+				<p>Video Buffer: <span id="buffer"></span></p>
+				<p>Video Representation: <span id="representation"></span></p>
+			</div>
+			<p> Video courtesy of <a href="https://en.wikipedia.org/wiki/Envivio"> Envivio </a> </p>
 		</div>
-		<div class="code">
-		<p>Video Bitrate: <span id="bitrate"></span> kbps</p> <p>Video Buffer: <span id="buffer"></span> seconds</p> <p>Video Representation: <span id="representation"></span></p>
-	</div>
+		<div style="width: 52vw; height: 14vh; margin-left: 2vw;">
+			<canvas id="myChart"></canvas>
+		</div>
+	</div>	
 
 	<script>
+		var ctx = document.getElementById('myChart').getContext('2d');
+		var myChart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: [],
+				datasets: [{
+					label: 'BitRate',
+					data: [],
+					yAxisID: 'y',
+					borderColor: "red",
+					fill: false,
+					cubicInterpolationMode: 'monotone',
+					tension: 0.4
+				},
+				{
+					label: 'Buffer Level',
+					data: [],
+					yAxisID: 'y1',
+					borderColor: 'blue',
+					fill: false,
+					cubicInterpolationMode: 'monotone',
+					tension: 0.4
+				}]
+			},
+			options: {
+				scales: {
+					y: {
+						type: 'linear',
+						display: true,
+						position: 'left',
+					},
+					y1: {
+						type: 'linear',
+						display: true,
+						position: 'right',
 
-	const protData = {
-		"org.w3.clearkey": {
-			"clearkeys": {
-				"oW5AK5BW43HzbTSKpiu3SQ": "hyN9IKGfWKdAwFaE5pm0qg"
-				//"Uvivb789BYUfYV8VurYVgA": "aeFA9fF8f8Fgagevbb9EFf" //Two complete random KEY and KID
-				//"oW5AK5BW43HzbTSKpiu3SQ": "aeFA9fF8f8Fgagevbb9EFf" //Only KEY changed
-				//"Uvivb789BYUfYV8VurYVgA": "hyN9IKGfWKdAwFaE5pm0qg" //Only KID changed
-				
+						// grid line settings
+						grid: {
+							drawOnChartArea: false, // only want the grid lines for one axis to show up
+						},
+					},
+				}
+
 			}
-		}
-	};
-
-	document.addEventListener("DOMContentLoaded", function () { 
-		init();
-	});
-
-	function init(){
-		var video, player,
-		mpd_url = "stream.mpd";
-		video = document.querySelector("video");
-		player = dashjs.MediaPlayer().create();
-		player.setProtectionData(protData);
-		player.initialize(video, mpd_url, true); 
-		player.on(dashjs.MediaPlayer.events["PLAYBACK_ENDED"], function() {
-			clearInterval(eventPoller);
 		});
-		
-		var eventPoller = setInterval(function() {
-			var streamInfo = player.getActiveStream().getStreamInfo();
-			var dashMetrics = player.getDashMetrics();
-			var dashAdapter = player.getDashAdapter();
-			
-			if (dashMetrics && streamInfo) {
-				const periodIdx = streamInfo.index;
-				var repSwitch = dashMetrics.getCurrentRepresentationSwitch('video', true);
-				var bufferLevel = dashMetrics.getCurrentBufferLevel('video', true);
-				var bitrate = repSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(repSwitch.to,periodIdx) / 1000) : NaN;
-				document.getElementById('buffer').innerText = bufferLevel;
-				document.getElementById('bitrate').innerText = bitrate;
-				document.getElementById('representation').innerText = repSwitch.to;
-			}
-		}, 500);
-	}
 	</script>
-
-	<script src="dash.all.min.js"></script>
-	<p> Video courtesy of <a href="https://en.wikipedia.org/wiki/Envivio"> Envivio </a> </p>
 
 </body>
 
