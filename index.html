@@ -2,8 +2,7 @@
 <html>
 <head>
 <title>P3_IRAC</title>
-<script src="https://reference.dashif.org/dash.js/latest/dist/dash.all.debug.js"></script>
-<script src="./mpd.js"></script>
+<meta charset="UTF-8">
 </head>
 
 <body>
@@ -19,6 +18,54 @@
 		<p>Video Bitrate: <span id="bitrate"></span> kbps</p> <p>Video Buffer: <span id="buffer"></span> seconds</p> <p>Video Representation: <span id="representation"></span></p>
 	</div>
 
+	<script>
+
+	const protData = {
+		"org.w3.clearkey": {
+			"clearkeys": {
+				"oW5AK5BW43HzbTSKpiu3SQ": "hyN9IKGfWKdAwFaE5pm0qg"
+				//"Uvivb789BYUfYV8VurYVgA": "aeFA9fF8f8Fgagevbb9EFf" //Two complete random KEY and KID
+				//"oW5AK5BW43HzbTSKpiu3SQ": "aeFA9fF8f8Fgagevbb9EFf" //Only KEY changed
+				//"Uvivb789BYUfYV8VurYVgA": "hyN9IKGfWKdAwFaE5pm0qg" //Only KID changed
+				
+			}
+		}
+	};
+
+	document.addEventListener("DOMContentLoaded", function () { 
+		init();
+	});
+
+	function init(){
+		var video, player,
+		mpd_url = "stream.mpd";
+		video = document.querySelector("video");
+		player = dashjs.MediaPlayer().create();
+		player.setProtectionData(protData);
+		player.initialize(video, mpd_url, true); 
+		player.on(dashjs.MediaPlayer.events["PLAYBACK_ENDED"], function() {
+			clearInterval(eventPoller);
+		});
+		
+		var eventPoller = setInterval(function() {
+			var streamInfo = player.getActiveStream().getStreamInfo();
+			var dashMetrics = player.getDashMetrics();
+			var dashAdapter = player.getDashAdapter();
+			
+			if (dashMetrics && streamInfo) {
+				const periodIdx = streamInfo.index;
+				var repSwitch = dashMetrics.getCurrentRepresentationSwitch('video', true);
+				var bufferLevel = dashMetrics.getCurrentBufferLevel('video', true);
+				var bitrate = repSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(repSwitch.to,periodIdx) / 1000) : NaN;
+				document.getElementById('buffer').innerText = bufferLevel;
+				document.getElementById('bitrate').innerText = bitrate;
+				document.getElementById('representation').innerText = repSwitch.to;
+			}
+		}, 500);
+	}
+	</script>
+
+	<script src="dash.all.min.js"></script>
 	<p> Video courtesy of <a href="https://en.wikipedia.org/wiki/Envivio"> Envivio </a> </p>
 
 </body>
